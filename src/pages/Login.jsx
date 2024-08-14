@@ -1,16 +1,22 @@
 import React from "react";
 import { Container, Button, Input } from "../components/index";
 import { useForm } from "react-hook-form";
-import LoginUser from "../appwrite/Auth";
+import {LoginUser} from "../appwrite/Auth";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/authSlice";
 function Login() {
   const { register, handleSubmit } = useForm();
+  const selector=  useSelector((state)=> state.auth)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const submitForm = (data) => {
+  const submitForm =async (data) => {
     // e.preventDefault()
-    let promise = LoginUser(data)
+    let promise = await LoginUser(data)
+    console.log("Login : ", promise);
+    dispatch(login({userData : promise , status : true}))
+    console.log("login",selector.userData)
     navigate("/")
-    console.log(data , promise);
   };
 
   return (
