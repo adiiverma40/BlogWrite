@@ -22,10 +22,18 @@ async function LogoutUser() {
 }
 
 async function isUserLoggedIn() {
-  const user = await account.get()
-  console.log("user is logged in :" , user)
-  return user
+  const user = await account.get();
+  if (user.status) {
+    return user;
+  } else {
+   return null;
+  }
 }
-export { LoginUser, LogoutUser };
+async function SignUpUser(data) {
+  const promise = await account.create(data.name, data.email, data.password);
+
+  return promise;
+}
+export { LoginUser, LogoutUser, SignUpUser };
 
 export default isUserLoggedIn;
