@@ -4,29 +4,39 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import isUserLoggedIn from "../appwrite/Auth";
 import { login } from "../store/authSlice";
+import {Card , Loading} from "../components/index"
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const selector = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
-  useEffect(() => {
+  const dispatch = useDispatch();
+  const userData = selector.userData;
+  const [userName , setUsername] = useState('')
+  const [email , setEmail] = useState('')
+  const [registrationDate , setRegistrationDate] = useState('')
+  const [status, setStatus] = useState()
+   useEffect(() => { 
     if (selector.status) {
       setIsLoggedIn(true);
+      setUsername(selector.userData.name)
+      setEmail(selector.userData.email)
+      setRegistrationDate(selector.userData.registration
+      )
+      setStatus(selector.userData.status)
     } else {
       setIsLoggedIn(false);
     }
   }, [navigate, selector]);
-  useEffect(()=> {
-    async function  checkLoggin() {
-    const data = await isUserLoggedIn()
-    if(data){
-      dispatch(login({userData : data, status: true}))
+  useEffect(() => {
+    async function checkLoggin() {
+      const data = await isUserLoggedIn();
+      if (data) {
+        dispatch(login({ userData: data, status: true }));
+      }
     }
-  }
-  checkLoggin()
-  },[])
+    checkLoggin();
+  }, []);
   const navigateToLogin = () => {
-    console.log("button clicked");
     navigate("/login");
   };
   return (
@@ -50,9 +60,14 @@ function Home() {
           </div>
         </>
       ) : (
-        <div>
-          {/* Content to show when logged in */}
-          <h1>Welcome, you are logged in!</h1>
+        <div className="flex justify-center items-center w-screen "style={{height:"93vh"}} >
+          <div className="left bg-red-600  w-full " style={{height:"93vh"}}> This is left
+          </div>
+          <div className="right  w-auto " style={{height:"93vh"}}>
+            <Card className="mx-4 mt-4"
+            name={userName} email={email}  registrationDate={registrationDate} status={status}     />
+          </div>
+   
         </div>
       )}
     </Container>

@@ -3,7 +3,8 @@ import { LogoutUser } from "../appwrite/Auth";
 
 const initialState = {
     userData : null,
-    status :false
+    status :false,
+    isDataLoaded:false,
 }
 
 export const authSlice = createSlice({
@@ -12,11 +13,13 @@ export const authSlice = createSlice({
     reducers:{
         login: (state , action) =>{
                 state.status = true;
-                state.userData = action.payload.userData    
+                state.userData = action.payload.userData   
+                state.isDataLoaded = action.payload.isDataLoaded 
         },
         logout: (state , action)=>{
             state.status = false,
             state.userData = null
+            // state.isDataLoaded = action.payload.isDataLoaded 
         }
     }
 })

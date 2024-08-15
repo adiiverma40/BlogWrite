@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Button, Input } from "../components/index";
+import React, { useState } from "react";
+import { Container, Button, Input ,Loading } from "../components/index";
 import { useForm } from "react-hook-form";
 import {LoginUser} from "../appwrite/Auth";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -10,15 +10,20 @@ function Login() {
   const selector=  useSelector((state)=> state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const submitForm =async (data) => {
-    // e.preventDefault()
-    let promise = await LoginUser(data)
-    console.log("Login : ", promise);
-    dispatch(login({userData : promise , status : true}))
-    console.log("login",selector.userData)
-    navigate("/")
+  const submitForm = async (data) => {
+    dispatch(login({ isDataLoaded: true }));
+    try {
+      let promise = await LoginUser(data);
+      if (promise) {
+        dispatch(login({ userData: promise, status: true, isDataLoaded: false }));
+        navigate("/");
+      }
+    } catch (error) {
+      dispatch(login({ isDataLoaded: false }));
+      console.error("Login failed", error);
+    }
   };
-
+  
   return (
     <Container bgColor={"0,0,0,0.2"}>
       <div
@@ -26,6 +31,7 @@ function Login() {
         style={{ width: "40% ", top: "21%", left: "28%" }}
       >
         <div>
+          { !selector.isDataLoaded ? (
           <form onSubmit={handleSubmit(submitForm)}>
             <h1 className="text-center font-bold hover:cursor-pointer">
               Login
@@ -43,8 +49,13 @@ function Login() {
               {...register("password", { required: true })}
             />
             <Button type="submit">Login</Button>
-          </form>
+          </form>) : (  <Loading loading={selector.isDataLoaded} />)
+          }
         </div>
+        <div>
+      
+</div>
+
       </div>
     </Container>
   );

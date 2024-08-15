@@ -5,12 +5,13 @@ const Input = forwardRef(function Input(
   { label, placeholder, type = "text", ...props },
   ref
 ) {
+  const id = nanoid()
   return (
     <div className="flex flex-col mb-4">
-      {label && <label className="mb-2 font-bold text-gray-700" htmlFor={nanoid}>{label}</label>}
+      {label && <label className="mb-2 font-bold text-gray-700" htmlFor={id}>{label}</label>}
       <input
-      key={nanoid}
-      id={nanoid}
+      key={id}
+      id={id}
       ref={ref}
         type={type}
         placeholder={placeholder}
