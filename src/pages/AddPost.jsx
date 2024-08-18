@@ -1,10 +1,10 @@
 import React from 'react';
-
+import {Container , RTE} from "../components/index"
 function AddPost() {
   return (
-    <div>
-      AddPost
-    </div>
+   <Container>
+    <RTE/>
+   </Container>
   );
 }
 

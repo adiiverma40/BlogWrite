@@ -5,4 +5,5 @@ import Button from "./button";
 import Input from "./Input";
 import Loading from "./Loading";
 import Card from ".//Card"
-export {Header,Footer , Container, Button , Input ,Loading , Card}
+import RTE from "./RTE"
+export {Header,Footer , Container,RTE, Button , Input ,Loading , Card}

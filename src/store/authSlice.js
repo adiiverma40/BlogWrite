@@ -5,6 +5,7 @@ const initialState = {
     userData : null,
     status :false,
     isDataLoaded:false,
+   
 }
 
 export const authSlice = createSlice({
@@ -20,7 +21,8 @@ export const authSlice = createSlice({
             state.status = false,
             state.userData = null
             // state.isDataLoaded = action.payload.isDataLoaded 
-        }
+        },
+ 
     }
 })
 
