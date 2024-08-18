@@ -10,7 +10,7 @@ import { store } from "./store/store.js";
 import {Provider} from "react-redux"
 import App from "./App.jsx";
 import "./index.css";
-import { Home, About, AllPost, AddPost, Login, SignUp } from "./pages/index.js";
+import { Home, About, AllPost, AddPost, Login, SignUp,Post, EditPost } from "./pages/index.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +21,8 @@ const router = createBrowserRouter(
       <Route path="/about" element={<About />} />
       <Route path="/allPost" element={<AllPost />} />
       <Route path="/addpost" element={<AddPost />} />
+      <Route path="/editpost" element={<EditPost/>}/>
+      <Route path="/post" element={<Post />} />
     </Route>
   )
 );

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import isUserLoggedIn from "../appwrite/Auth";
 import { login } from "../store/authSlice";
 import {Card , Loading} from "../components/index"
+import AllPost from "./AllPost";
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -60,8 +61,9 @@ function Home() {
           </div>
         </>
       ) : (
-        <div className="flex justify-center items-center w-screen "style={{height:"93vh"}} >
-          <div className="left bg-red-600  w-full " style={{height:"93vh"}}> This is left
+        <div className="flex justify-center items-center "style={{height:"93vh" , width:"98.5vw"}} >
+          <div className="left w-full " style={{height:"93vh"}}> 
+            <AllPost/>
           </div>
           <div className="right  w-auto " style={{height:"93vh"}}>
             <Card className="mx-4 mt-4"

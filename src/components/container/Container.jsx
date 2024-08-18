@@ -3,7 +3,7 @@ import React from "react";
 function Container({ flex, display,children, font = "fraunces", font_size = "18px" ,bgColor }) {
   return (
     <div
-      className={`w-full ${font} justify-center items-center `}
+      className={`w-full z-50 ${font} justify-center items-center `}
       style={{ fontSize: font_size , height : "100vh"
         , background : `rgba(${bgColor})`,
         display: display,

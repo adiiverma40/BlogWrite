@@ -20,6 +20,7 @@ async function LoginUser(data) {
     data.email,
     data.password
   );
+  console.log(promise)
   return promise;
 }
 async function LogoutUser() {
@@ -29,6 +30,8 @@ async function LogoutUser() {
 async function isUserLoggedIn() {
   try {
     const user = await account.get();
+    console.log(user);
+    
     return user; // Return user if logged in
   } catch (error) {
     console.error("Error checking user login status:", error);
@@ -66,7 +69,7 @@ async function uploadImage(filename, file) {
     console.log(error);
   }
 }
-async function uploadPost(title, content) {
+async function uploadPost(title, content,email) {
   const promise = databases.createDocument(
     conf.appwriteDatabase,
     conf.appwriteCollection,
@@ -74,21 +77,45 @@ async function uploadPost(title, content) {
     {
       title: title,
       content: content,
+      userId: email,
     }
   );
   console.log(promise);
   return promise;
 }
 
-async function allPost(){
+async function allPost() {
   const promise = await databases.listDocuments(
     conf.appwriteDatabase,
-    conf.appwriteCollection, 
+    conf.appwriteCollection,
     []
-  )
-  console.log(promise)
-  return promise
+  );
+  console.log(promise);
+  return promise;
 }
-export { LoginUser, LogoutUser, SignUpUser, uploadImage, uploadPost , allPost };
+async function editPost(docId, title, content) {
+  try {
+    const response = await databases.updateDocument(
+      conf.appwriteDatabase, // Database ID
+      conf.appwriteCollection, // Collection ID
+      docId, // Document ID
+      { title: title, content: content }, // Data to update
+    );
+    return response; // Optionally return the response if needed
+  } catch (error) {
+    console.error("Error updating document:", error);
+    throw error; // Optionally rethrow the error to handle it elsewhere
+  }
+}
+
+export {
+  LoginUser,
+  LogoutUser,
+  SignUpUser,
+  uploadImage,
+  uploadPost,
+  allPost,
+  editPost,
+};
 
 export default isUserLoggedIn;

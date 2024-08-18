@@ -1,31 +1,44 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import { Input, Button, Loading } from "./index";
-import isUserLoggedIn, { uploadImage, uploadPost } from "../appwrite/Auth";
+import { Input, Button, Loading } from "../components/index";
+import isUserLoggedIn, { editPost, uploadImage, uploadPost } from "../appwrite/Auth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/authSlice";
-export default function RTE() {
+export default function EditPost() {
   const [isEditorLoaded, setIsEditorLoaded] = useState(true);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+  const [defaultContent, setDefaultContent] = useState("<b>welcome<b>")
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  const selector = useSelector((state) => state.auth)
+    const selector = useSelector((state)=> state.auth)
+// Gets data from the AuthSilce 
+useEffect(() => {
+    if (selector.edit) {
+      setTitle(selector.title);
+      setDefaultContent(selector.content);
+    } else {
+      alert("You are not authorised to Edit this post");
+      navigate('/allpost');
+    }
+  }, [navigate, selector.edit, selector.title, selector.content]); // Add selector.title and selector.content
+  
+
+
+
+
   useEffect(() => {
     async function checkLoggin(){
     let promise = await isUserLoggedIn();
-
     if (promise) {
       dispatch(login({userData: promise , status: true}))
-
       return null;
     } else {
       alert("Please Login");
       navigate("/");
     }}
     checkLoggin()
-   
   }, []);
   const handleEditorInit = (editor) => {
     setIsEditorLoaded(false);
@@ -47,20 +60,23 @@ export default function RTE() {
       }
     });
   }
+
   const editorRef = useRef(null);
+
+
+
+
   async function upload() {
     if (editorRef.current) {
       // Retrieve content from the editor
       const content = editorRef.current.getContent();
       setContent(content); // Set content in state
-  // Log the content for debugging
-      let slug = title.replace(/ /g, "-");
-   
+      console.log("Editor content:", content); // Log the content for debugging
       try {
         // Upload the post
         const stringContent = String(content);
-        let promise = await uploadPost(title, stringContent , selector.userData.email );
-    
+        let promise = await editPost(selector.$id , selector.userData.$id , title , content)
+        console.log("Upload response:", promise);
         if (promise) navigate("/allpost");
       } catch (error) {
         console.error("Error uploading post:", error);
@@ -69,6 +85,9 @@ export default function RTE() {
       console.warn("Editor reference is not available");
     }
   }
+
+
+
 
   return (
     <div className="w-3/4  m-auto pb-16">
@@ -82,7 +101,7 @@ export default function RTE() {
         <Input
           label="Title"
           placeholder="Enter Title"
-          value={title}
+          value={title || ""}
           onChange={(e) => setTitle(e.target.value)} // Pass the handleChange function
         />
 
@@ -123,8 +142,7 @@ export default function RTE() {
           width: "100%", // Set the width of the editor
           images_upload_handler: uploadImageFile,
         }}
-        initialValue="<p>Welcome! </p>"
-      />
+        initialValue={defaultContent}     />
     </div>
   );
 }

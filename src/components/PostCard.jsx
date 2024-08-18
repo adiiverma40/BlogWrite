@@ -1,10 +1,10 @@
 import React from 'react';
 
-function PostCard({title, src, index}) {
+function PostCard({title, src, index ,onClick}) {
   return (
-    <div className="card-hover rounded-lg shadow-lg" key={index}
-    style={{width:"25%",
-        height:'67%',
+    <div onClick={onClick} className="card-hover rounded-lg shadow-lg hover:cursor-pointer" key={index}
+    style={{width:"20%",
+        height:'60%',
         margin:"10px",
 
     }}
