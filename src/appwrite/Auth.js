@@ -1,5 +1,5 @@
 import conf from "../conf/conf";
-import { Client, Account, Storage , Databases } from "appwrite";
+import { Client, Account, Storage, Databases } from "appwrite";
 import { nanoid } from "@reduxjs/toolkit";
 
 const client = new Client()
@@ -8,8 +8,7 @@ const client = new Client()
 
 const account = new Account(client);
 const storage = new Storage(client);
-const databases = new Databases(client)
-
+const databases = new Databases(client);
 
 async function updateName(data) {
   const promise = await account.updateName(data.name);
@@ -67,21 +66,29 @@ async function uploadImage(filename, file) {
     console.log(error);
   }
 }
-async function uploadPost( title , content) {
-    const promise = databases.createDocument(
-      conf.appwriteDatabase,
-      conf.appwriteCollection,
-      nanoid(),
-      {
-        "title" : title,
-        "content" : content
-      }
-    )
-    console.log(promise);
-    return promise
-    
-  
+async function uploadPost(title, content) {
+  const promise = databases.createDocument(
+    conf.appwriteDatabase,
+    conf.appwriteCollection,
+    nanoid(),
+    {
+      title: title,
+      content: content,
+    }
+  );
+  console.log(promise);
+  return promise;
 }
-export { LoginUser, LogoutUser, SignUpUser, uploadImage, uploadPost };
+
+async function allPost(){
+  const promise = await databases.listDocuments(
+    conf.appwriteDatabase,
+    conf.appwriteCollection, 
+    []
+  )
+  console.log(promise)
+  return promise
+}
+export { LoginUser, LogoutUser, SignUpUser, uploadImage, uploadPost , allPost };
 
 export default isUserLoggedIn;
