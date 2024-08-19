@@ -1,4 +1,4 @@
-# React + Vite
+# React + Vite + Tailwind css
 # Blogwrite
 
 **Blogwrite** is a simple and modern blogging platform built with Vite and React, allowing users to write and post blogs with ease. It leverages Appwrite for backend services, React Hook Form for form management, and Tiny Cloud for a rich text editor experience.
