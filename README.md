@@ -1,4 +1,3 @@
-# React + Vite + Tailwind css
 # Blogwrite
 
 **Blogwrite** is a simple and modern blogging platform built with Vite and React, allowing users to write and post blogs with ease. It leverages Appwrite for backend services, React Hook Form for form management, and Tiny Cloud for a rich text editor experience.
@@ -9,6 +8,7 @@
 - **Rich Text Editing**: Utilize Tiny Cloud to format your content.
 - **Form Validation**: Handle forms efficiently with React Hook Form.
 - **Backend Integration**: Powered by Appwrite for secure and scalable backend services.
+- **Image Upload**: Upload images to Appwrite's storage bucket with user-specific permissions.
 
 ## Tech Stack
 
@@ -22,7 +22,6 @@
 
 ### Prerequisites
 
-- Node.js installed on your machine.
 - Appwrite instance running (or access to an Appwrite Cloud instance).
 - Tiny Cloud API key (for the rich text editor).
 
@@ -70,17 +69,20 @@
 
 ## Usage
 
-- **Creating a Blog Post**: Navigate to the "New Blog" section, write your content using the Tiny Cloud editor, and submit the form. The post will be saved and displayed on the blog list.
-- **Managing Blog Posts**: View all your blog posts on the main page, where you can edit or delete posts as needed.
+### Creating a Blog Post
 
-## Contributing
-
-Contributions are welcome! Please submit a pull request or open an issue to discuss any changes or improvements.
-
-## License
-
-This project is licensed under the MIT License.
-
----
-
-Happy blogging with **Blogwrite**! 🎉
+1. **Add Title, Content, and Email**: 
+   - The form will collect the title, blog content (via TinyMCE), and the user's email.
+   - This data will be sent to the Appwrite database.
+   
+   ```js
+   // Example using Appwrite SDK to create a document
+   const { databases } = new Client();
+   databases.createDocument(
+       'DATABASE_ID',
+       'COLLECTION_ID',
+       'UNIQUE_ID', 
+       { title, content, email }, 
+       ['user:USER_ID'], 
+       ['user:USER_ID']
+   );
